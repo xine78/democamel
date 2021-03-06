@@ -17,31 +17,73 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <!-- SPRING BOOT STARTER -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-swagger-java-starter</artifactId>
-            <version>2.23.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-servlet-starter</artifactId>
-            <version>2.23.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jackson-starter</artifactId>
-            <version>2.23.4</version>
-        </dependency>
 
+        <!-- CAMEL SPRING BOOT STARTER-->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-spring-boot-starter</artifactId>
+            <version>3.8.0</version>
+            <!-- use the same version as your Camel core version -->
+        </dependency>
+        <!-- camel spring boot -->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-spring-boot</artifactId>
+            <version>3.8.0</version> <!-- use the same version as your Camel core version -->
+        </dependency>
+        <!-- camel rest starter -->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-rest-starter</artifactId>
+            <version>3.8.0</version>
+            <!-- use the same version as your Camel core version -->
+        </dependency>
+        <!-- camel STARTER servlet, http, jetty -->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-servlet-starter</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-http-starter</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-jetty-starter</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <!-- camel servlet, http, jetty -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-servlet</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jetty</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <!-- TESTS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.4.3</version>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>

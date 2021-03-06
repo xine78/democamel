@@ -1,34 +1,51 @@
 package com.example.democamel.route;
 
 import com.example.democamel.errors.CustomException;
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.stereotype.Component;
+import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.rest.RestBindingMode;
+import org.springframework.stereotype.Component;
 
 @Component
 public class Route extends RouteBuilder {
     @Override
     public void configure() throws Exception {
-        restConfiguration()
-                .component("servlet")
+        CamelContext context = new DefaultCamelContext();
+        /*restConfiguration()
+                .contextPath("/titi")
+                .port(9090)
+                .enableCORS(true)
+                .apiContextPath("/api-doc")
+                .apiProperty("api.title", "Test REST API")
+                .apiProperty("api.version", "v1")
+                .apiContextRouteId("doc-api")
+                //.component("servlet")
                 .bindingMode(RestBindingMode.json);
-
-        onException(CustomException.class)
-                .maximumRedeliveries(2)
-                .retryAttemptedLogLevel(LoggingLevel.WARN)
-                .backOffMultiplier(2)
-                .maximumRedeliveryDelay(60000)
-                .useExponentialBackOff()
-                .handled(true)
-                .to("bean:camelRetryExceptionHandlerService?method=handleCustomException");
-
-        rest("/hello").get()
-                .to("direct:hello");
-
-        from("direct:hello")
-                .log(LoggingLevel.INFO, "Hello World")
-                .transform().simple("Hello World");
+        rest("/api/")
+                .id("api-route")
+                .consumes("application/json")
+                .get()
+                .bindingMode(RestBindingMode.json)
+                .to("direct:remoteService");
+        from("direct:remoteService")
+                .routeId("direct-route")
+                .tracing()
+                .log(">>> 1")
+                .log(">>> 2")
+                .transform().simple("Hello >>")
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));*/
+        // OK //
+        // from("timer:foo").to("log:bar");
+        // from("file:/in/").to("log:bar");
+        // from("direct:start").to("log:OUT");
+        // from("timer://trigger").to("log:OUT");
+        from("jetty:http://0.0.0.0:9080/mys").to("log:bar");
+        // NOK //
+        // from("jms:invoices").to("file:/invoices");
+        // rest("/df").get().to("log:CCoucou");
 
     }
 }
