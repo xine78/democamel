@@ -32,18 +32,15 @@ public class Route extends RouteBuilder {
         //OKOK
         ///from("jetty:http://0.0.0.0:9080/mys").to("log:bar");
         from("jetty:http://0.0.0.0:9080/mys")
-                .id("first-route")
+                .routeId("first-route")
                 .to("direct:remoteService");
         from("direct:remoteService")
-                .routeId("direct-route")
+                .routeId("seconde-route")
                 .tracing()
                 .log(">>> 1")
                 .log(">>> 2")
                 .transform().simple("Hello All !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
-        // NOK //
-        // from("jms:invoices").to("file:/invoices");
-        // rest("/df").get().to("log:CCoucou");
 
     }
 }

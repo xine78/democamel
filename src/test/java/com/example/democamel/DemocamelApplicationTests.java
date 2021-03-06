@@ -9,13 +9,12 @@ import org.springframework.boot.test.web.client.TestRestTemplateExtensionsKt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 @ExtendWith(SpringExtension.class)
-//@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 //@TestPropertySource(locations="classpath:application-test.properties")
 class DemocamelApplicationTests {
-    @Autowired
-    TestRestTemplate restTemplate;
 
     @Test
     void contextLoads() {
