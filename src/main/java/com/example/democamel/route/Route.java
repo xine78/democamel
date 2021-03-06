@@ -23,26 +23,24 @@ public class Route extends RouteBuilder {
                 .apiProperty("api.version", "v1")
                 .apiContextRouteId("doc-api")
                 //.component("servlet")
-                .bindingMode(RestBindingMode.json);
-        rest("/api/")
-                .id("api-route")
-                .consumes("application/json")
-                .get()
-                .bindingMode(RestBindingMode.json)
+                .bindingMode(RestBindingMode.json);*/
+        // OK //
+        // from("timer:foo").to("log:bar");
+        // from("file:/in/").to("log:bar");
+        // from("direct:start").to("log:OUT");
+        // from("timer://trigger").to("log:OUT");
+        //OKOK
+        ///from("jetty:http://0.0.0.0:9080/mys").to("log:bar");
+        from("jetty:http://0.0.0.0:9080/mys")
+                .id("first-route")
                 .to("direct:remoteService");
         from("direct:remoteService")
                 .routeId("direct-route")
                 .tracing()
                 .log(">>> 1")
                 .log(">>> 2")
-                .transform().simple("Hello >>")
-                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));*/
-        // OK //
-        // from("timer:foo").to("log:bar");
-        // from("file:/in/").to("log:bar");
-        // from("direct:start").to("log:OUT");
-        // from("timer://trigger").to("log:OUT");
-        from("jetty:http://0.0.0.0:9080/mys").to("log:bar");
+                .transform().simple("Hello All !")
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
         // NOK //
         // from("jms:invoices").to("file:/invoices");
         // rest("/df").get().to("log:CCoucou");
