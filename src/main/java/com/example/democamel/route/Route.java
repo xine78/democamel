@@ -30,7 +30,7 @@ public class Route extends RouteBuilder {
         // from("direct:start").to("log:OUT");
         // from("timer://trigger").to("log:OUT");
         //OKOK
-        ///from("jetty:http://0.0.0.0:9080/mys").to("log:bar");
+        from("jetty:http://0.0.0.0:9080/mys2").to("log:bar");
         from("jetty:http://0.0.0.0:9080/mys")
                 .routeId("first-route")
                 .to("direct:remoteService");

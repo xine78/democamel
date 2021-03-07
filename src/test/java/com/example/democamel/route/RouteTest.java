@@ -2,6 +2,7 @@ package com.example.democamel.route;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
+import org.apache.camel.ServiceStatus;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,9 @@ public class RouteTest {
         ProducerTemplate template = camelContext.createProducerTemplate();
         String out = template.requestBody("direct:remoteService", null, String.class);
         assertEquals("Hello All !", out);
-
+        //
+        //assertEquals(ServiceStatus.Started, camelContext.getStatus());
         template.stop();
-
     }
 
 
