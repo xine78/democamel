@@ -30,8 +30,8 @@ public class Route extends RouteBuilder {
         // from("direct:start").to("log:OUT");
         // from("timer://trigger").to("log:OUT");
         //OKOK
-        from("jetty:http://0.0.0.0:9080/mys2").to("log:bar");
-        from("jetty:http://0.0.0.0:9080/mys")
+        from("jetty:http://0.0.0.0:9080/testtolog").to("log:write to log");
+        from("jetty:http://0.0.0.0:9080/probe")
                 .routeId("first-route")
                 .to("direct:remoteService");
         from("direct:remoteService")
@@ -39,7 +39,7 @@ public class Route extends RouteBuilder {
                 .tracing()
                 .log(">>> 1")
                 .log(">>> 2")
-                .transform().simple("Hello All !")
+                .transform().simple("I'm Alive !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 
     }

@@ -26,10 +26,10 @@ public class RouteTest {
     private CamelContext camelContext;
 
     @Test
-    public void testReceive() throws Exception {
+    public void testProbe() throws Exception {
         ProducerTemplate template = camelContext.createProducerTemplate();
         String out = template.requestBody("direct:remoteService", null, String.class);
-        assertEquals("Hello All !", out);
+        assertEquals("I'm Alive !", out);
         //
         //assertEquals(ServiceStatus.Started, camelContext.getStatus());
         template.stop();
