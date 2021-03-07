@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-@Service("userService")
+@Service("dummyService")
 public class DummyServiceImpl implements DummyService {
 
     Logger logger = Logger.getLogger(DummyServiceImpl.class.getName());
@@ -19,8 +19,12 @@ public class DummyServiceImpl implements DummyService {
 
     @Override
     public Dummy findUser(Integer id) {
+        if (id instanceof Integer){
         Optional<Dummy> optDummy = dummyDao.findById(id);
         return optDummy.isPresent()?optDummy.get():null;
+        } else {
+            return null;
+        }
     }
 
     @Override
