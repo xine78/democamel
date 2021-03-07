@@ -54,12 +54,15 @@ public class Route extends RouteBuilder {
         restConfiguration().component("jetty").host("localhost").port(9080)
                 // use camel-http as rest client
                 .producerComponent("http");
-
+        //
+        from("direct:probe").to("rest:get:probe");
+        rest("/probe").get().route().transform().simple("I'm Alive !")
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
+        //
         from("direct:start").to("rest:get:dummys/{id}");
-
         // use the rest DSL to define the rest services
         rest("/dummys/").get("{id}").route().to("mock:input")
-                .to("bean:dummyService?method=findUser(${header.id})")
+                .to("bean:dummyService?method=findDummy(${header.id})")
                 .process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
                         Dummy myDummy = exchange.getIn().getBody(Dummy.class);

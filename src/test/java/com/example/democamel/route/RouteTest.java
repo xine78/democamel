@@ -44,7 +44,7 @@ public class RouteTest {
     @Test
     public void testProbe() throws Exception {
         ProducerTemplate template = camelContext.createProducerTemplate();
-        String out = template.requestBody("direct:remoteService", null, String.class);
+        String out = template.requestBody("direct:probe", null, String.class);
         assertEquals("I'm Alive !", out);
         //
         assertEquals(ServiceStatus.Started, camelContext.getStatus());

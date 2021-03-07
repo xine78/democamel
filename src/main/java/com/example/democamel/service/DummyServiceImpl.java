@@ -18,22 +18,18 @@ public class DummyServiceImpl implements DummyService {
     private DummyDao dummyDao;
 
     @Override
-    public Dummy findUser(Integer id) {
-        if (id instanceof Integer){
+    public Dummy findDummy(Integer id) {
         Optional<Dummy> optDummy = dummyDao.findById(id);
         return optDummy.isPresent()?optDummy.get():null;
-        } else {
-            return null;
-        }
     }
 
     @Override
-    public Collection<Dummy> findUsers() {
+    public Collection<Dummy> findDummys() {
         return dummyDao.findAll();
     }
 
     @Override
-    public void updateUser(Dummy dummy) {
+    public void updateDummy(Dummy dummy) {
         dummyDao.save(dummy);
     }
 
