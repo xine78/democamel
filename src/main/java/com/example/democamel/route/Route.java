@@ -57,6 +57,8 @@ public class Route extends RouteBuilder {
                     .produces("application/json")
                     .outType(Dummy.class)
                     .to("direct:getDummy")
+                .get("count")
+                    .to("direct:getCount")
                 .get("/probe")
                     .to("direct:getProbe")
                 .delete("/{id}")
@@ -77,22 +79,32 @@ public class Route extends RouteBuilder {
                     .produces("application/json")
                     .to("direct:createDummy");
 
+        // GET
         from("direct:getDummy").to("mock:input")
                 .to("bean:dummyService?method=findDummy(${header.id})")
-                .process(new Processor() {
-                    public void process(Exchange exchange) throws Exception {
+                .process(exchange -> {
                         Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                         exchange.getMessage().setBody(myDummy);
-                    }
                 });
 
         from("direct:getProbe").transform().simple("I'm Alive !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 
+        from("direct:getCount")
+                .to("mock:input")
+                .to("bean:dummyService?method=count")
+                .process(exchange -> {
+                        Long nombre = exchange.getIn().getBody(Long.class);
+                        exchange.getMessage().setBody(nombre);
+                });
+
         from("direct:createDummy")
                 .to("mock:input")
                 .to("bean:dummyService?method=create(${body})")
-                .transform().simple("create");
+                .process(exchange -> {
+                    Dummy myDummy = exchange.getIn().getBody(Dummy.class);
+                    exchange.getMessage().setBody(myDummy);
+                });
 
         from("direct:deleteDummy")
                 .to("mock:input")

@@ -57,14 +57,8 @@ public class RouteTest {
     @Order(3)
     public void testCreateDummy() throws Exception {
         template = camelContext.createProducerTemplate();
-        template.sendBody("direct:create-dummy", new Dummy(3, "dummy_3"));
-       // String out = template.sendBodyAndHeader()
+        template.sendBody("direct:createDummy", new Dummy(3, "dummy_3"));
 
-                /*to("rest:post:users/lives")
-                .withHeader(Exchange.CONTENT_TYPE, "application/json")
-                .withBody(md).request(String.class);*/
-
-        //assertNotNull(out);
     }
 
 }
