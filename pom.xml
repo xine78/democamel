@@ -27,26 +27,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
         <!-- CAMEL SPRING BOOT STARTER-->
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-spring-boot-starter</artifactId>
             <version>3.8.0</version>
             <!-- use the same version as your Camel core version -->
-        </dependency>
-
-        <!-- H2 (runtime) -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- camel spring boot -->
-        <dependency>
-            <groupId>org.apache.camel.springboot</groupId>
-            <artifactId>camel-spring-boot</artifactId>
-            <version>3.8.0</version> <!-- use the same version as your Camel core version -->
         </dependency>
         <!-- camel rest starter -->
         <dependency>
@@ -70,6 +56,19 @@
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-jetty-starter</artifactId>
             <version>3.8.0</version>
+        </dependency>
+
+        <!-- H2 (runtime) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- camel spring boot -->
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-spring-boot</artifactId>
+            <version>3.8.0</version> <!-- use the same version as your Camel core version -->
         </dependency>
         <!-- camel servlet, http, jetty -->
         <dependency>
