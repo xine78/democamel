@@ -70,7 +70,7 @@
             <artifactId>camel-spring-boot</artifactId>
             <version>3.8.0</version> <!-- use the same version as your Camel core version -->
         </dependency>
-        <!-- camel servlet, http, jetty -->
+        <!-- camel servlet, http, jetty, Jackson -->
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-servlet</artifactId>
@@ -84,6 +84,11 @@
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-jetty</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
             <version>3.8.0</version>
         </dependency>
         <!-- Feign -->

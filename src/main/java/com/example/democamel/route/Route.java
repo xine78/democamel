@@ -53,21 +53,27 @@ public class Route extends RouteBuilder {
        */
         restConfiguration().component("jetty").host("localhost").port(9080)
                 // use camel-http as rest client
-                .producerComponent("http");
+                .producerComponent("http")
+                // produce json
+                .bindingMode(RestBindingMode.json);
         //
         from("direct:probe").to("rest:get:probe");
         rest("/probe").get().route().transform().simple("I'm Alive !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
-        //
-        from("direct:start").to("rest:get:dummys/{id}");
-        // use the rest DSL to define the rest services
+        // read
+        from("direct:find-dummy").to("rest:get:dummys/{id}");
         rest("/dummys/").get("{id}").route().to("mock:input")
                 .to("bean:dummyService?method=findDummy(${header.id})")
                 .process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
                         Dummy myDummy = exchange.getIn().getBody(Dummy.class);
-                        exchange.getMessage().setBody(myDummy.getName());
+                        exchange.getMessage().setBody(myDummy);
                     }
                 });
+
+        // create
+        from("direct:create-dummy").to("rest:post:dummy");
+        rest("/dummy").post()
+                .to("bean:dummyService?method=create(${header.body})");
     }
 }

@@ -10,8 +10,7 @@ import org.apache.camel.ServiceStatus;
 import org.apache.camel.builder.AdviceWithRouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = "spring.cloud.consul.enabled=false")
 @EnableAutoConfiguration
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RouteTest {
     @Autowired
     private TestRestTemplate restTemplate;
@@ -35,29 +35,35 @@ public class RouteTest {
     private MockEndpoint mockDummyService;
 
     private Dummy dummy;
+    private ProducerTemplate template;
 
     @BeforeAll
     static void initAll() {
 
     }
+    @Test
+    @Order(1)
+    public void testStatus() throws Exception {
+        assertEquals(ServiceStatus.Started, camelContext.getStatus());
+    }
 
     @Test
+    @Order(2)
     public void testProbe() throws Exception {
-        ProducerTemplate template = camelContext.createProducerTemplate();
+        template = camelContext.createProducerTemplate();
         String out = template.requestBody("direct:probe", null, String.class);
-        assertEquals("I'm Alive !", out);
-        //
-        assertEquals(ServiceStatus.Started, camelContext.getStatus());
+        assertEquals("\"I'm Alive !\"", out);
         //
         template.stop();
     }
 
     @Test
+    @Order(3)
     public void testDummy() throws Exception {
         dummy = new Dummy();
-        dummy.setId(1);
-        dummy.setName("dummy_1");
-
+        dummy.setId(3);
+        dummy.setName("dummy_3");
+        //mockDummyService.
     }
 
 }
