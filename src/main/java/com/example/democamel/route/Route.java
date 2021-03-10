@@ -46,6 +46,10 @@ public class Route extends RouteBuilder {
                 .bindingMode(RestBindingMode.json);
 
         rest("/dummys")
+                .get()
+                    .description("Gets All the Dummys")
+                    .produces("application/json")
+                    .to("direct:getDummys")
                 .get("/{id}")
                     .description("Gets the Dummy by ID")
                     .param()
@@ -80,16 +84,20 @@ public class Route extends RouteBuilder {
                     .to("direct:createDummy");
 
         // GET
+        // All
+        from("direct:getDummys").to("mock:input")
+                .to("bean:dummyService?method=findDummys()");
+        //by ID
         from("direct:getDummy").to("mock:input")
                 .to("bean:dummyService?method=findDummy(${header.id})")
                 .process(exchange -> {
                         Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                         exchange.getMessage().setBody(myDummy);
                 });
-
+        // Probe
         from("direct:getProbe").transform().simple("I'm Alive !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
-
+        // Count
         from("direct:getCount")
                 .to("mock:input")
                 .to("bean:dummyService?method=count")
@@ -98,6 +106,7 @@ public class Route extends RouteBuilder {
                         exchange.getMessage().setBody(nombre);
                 });
 
+        // POST
         from("direct:createDummy")
                 .to("mock:input")
                 .to("bean:dummyService?method=create(${body})")
@@ -106,6 +115,7 @@ public class Route extends RouteBuilder {
                     exchange.getMessage().setBody(myDummy);
                 });
 
+        // DELETE
         from("direct:deleteDummy")
                 .to("mock:input")
                 .to("bean:dummyService?method=delete(${header.id})")
