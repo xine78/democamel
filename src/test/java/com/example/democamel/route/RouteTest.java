@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableAutoConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RouteTest {
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -55,10 +56,23 @@ public class RouteTest {
 
     @Test
     @Order(3)
+    public void testCount() throws Exception {
+        template = camelContext.createProducerTemplate();
+        Long out = template.requestBody("direct:getCount", null, Long.class);
+        assertEquals(2, out);
+        //
+        template.stop();
+    }
+
+    @Test
+    @Order(4)
     public void testCreateDummy() throws Exception {
         template = camelContext.createProducerTemplate();
-        template.sendBody("direct:createDummy", new Dummy(3, "dummy_3"));
-
+        //template.sendBody("direct:createDummy", new Dummy(3, "dummy_3"));
+        Dummy md = (Dummy) template.requestBody("direct:createDummy", new Dummy(3, "dummy_3"));
+        assertTrue(md != null && md.getId()==3 && md.getName().equals("dummy_3"));
+        //
+        template.stop();
     }
 
 }
