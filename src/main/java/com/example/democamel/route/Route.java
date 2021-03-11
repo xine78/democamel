@@ -26,9 +26,7 @@ public class Route extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        dummyService.create(new Dummy(1, "dummy_1"));
-        dummyService.create(new Dummy(2, "dummy_2"));
-        //
+
         onException(CustomException.class)
                 .maximumRedeliveries(2)
                 .retryAttemptedLogLevel(LoggingLevel.WARN)
