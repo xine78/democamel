@@ -38,6 +38,7 @@ public class RouteTest {
     static void initAll() {
 
     }
+
     @Test
     @Order(1)
     public void testStatus() throws Exception {

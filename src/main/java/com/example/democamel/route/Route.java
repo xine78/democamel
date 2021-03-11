@@ -55,13 +55,13 @@ public class Route extends RouteBuilder {
                     .param()
                         .name("id")
                         .type(RestParamType.path)
-                        .description("The id of the user to get")
+                        .description("The id of the Dummy to get")
                         .dataType("number")
                     .endParam()
                     .produces("application/json")
                     .outType(Dummy.class)
                     .to("direct:getDummy")
-                .get("count")
+                .get("/count")
                     .to("direct:getCount")
                 .get("/probe")
                     .to("direct:getProbe")
@@ -69,7 +69,7 @@ public class Route extends RouteBuilder {
                     .param()
                         .name("id")
                         .type(RestParamType.path)
-                        .description("Deletes the user from database given an ID")
+                        .description("Deletes a Dummy from database given an ID")
                         .dataType("number")
                     .endParam()
                     .produces("application/json")
@@ -84,16 +84,6 @@ public class Route extends RouteBuilder {
                     .to("direct:createDummy");
 
         // GET
-        // All
-        from("direct:getDummys").to("mock:input")
-                .to("bean:dummyService?method=findDummys()");
-        //by ID
-        from("direct:getDummy").to("mock:input")
-                .to("bean:dummyService?method=findDummy(${header.id})")
-                .process(exchange -> {
-                        Dummy myDummy = exchange.getIn().getBody(Dummy.class);
-                        exchange.getMessage().setBody(myDummy);
-                });
         // Probe
         from("direct:getProbe").transform().simple("I'm Alive !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
@@ -102,8 +92,20 @@ public class Route extends RouteBuilder {
                 .to("mock:input")
                 .to("bean:dummyService?method=count")
                 .process(exchange -> {
-                        Long nombre = exchange.getIn().getBody(Long.class);
-                        exchange.getMessage().setBody(nombre);
+                    Long nombre = exchange.getIn().getBody(Long.class);
+                    exchange.getMessage().setBody(nombre);
+                });
+
+        // All
+        from("direct:getDummys").to("mock:input")
+                .to("bean:dummyService?method=findDummys()");
+        //by ID
+        from("direct:getDummy").to("mock:input")
+                .to("bean:dummyService?method=findDummy(${header.id})")
+                .process(exchange -> {
+                        // Return the Dummy's founded Object in the response Body
+                        Dummy myDummy = exchange.getIn().getBody(Dummy.class);
+                        exchange.getMessage().setBody(myDummy);
                 });
 
         // POST
@@ -119,6 +121,6 @@ public class Route extends RouteBuilder {
         from("direct:deleteDummy")
                 .to("mock:input")
                 .to("bean:dummyService?method=delete(${header.id})")
-                .transform().simple("delete");
+                .transform().simple("deleted");
     }
 }
