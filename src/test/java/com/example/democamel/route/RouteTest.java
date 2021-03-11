@@ -1,23 +1,18 @@
 package com.example.democamel.route;
 
-import com.example.democamel.dao.DummyDao;
 import com.example.democamel.model.Dummy;
-import com.example.democamel.service.DummyService;
-import com.example.democamel.service.DummyServiceImpl;
-import org.apache.camel.*;
-import org.apache.camel.builder.AdviceWithRouteBuilder;
-import org.apache.camel.component.mock.MockEndpoint;
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import org.apache.camel.ServiceStatus;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.TestPropertySource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,9 +26,7 @@ public class RouteTest {
     @Autowired
     private CamelContext camelContext;
 
-    private Dummy dummy;
     private ProducerTemplate template;
-
 
     @Test
     @Order(1)
