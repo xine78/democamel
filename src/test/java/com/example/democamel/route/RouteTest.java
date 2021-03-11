@@ -73,9 +73,6 @@ public class RouteTest {
         Dummy md = (Dummy) template.requestBodyAndHeader("direct:getDummy", null,"id", 1);
         assertNull(md);
         //
-        Long out = template.requestBody("direct:getCount", null, Long.class);
-        assertEquals(1, out);
-        //
         template.stop();
     }
 
