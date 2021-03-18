@@ -3,21 +3,13 @@ package com.example.democamel.route;
 import com.example.democamel.errors.CustomException;
 import com.example.democamel.model.Dummy;
 import com.example.democamel.service.DummyService;
-import com.example.democamel.service.DummyServiceImpl;
-import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.apache.camel.model.rest.RestParamType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-
-import java.awt.print.Book;
 
 @Component
 public class Route extends RouteBuilder {
@@ -60,9 +52,18 @@ public class Route extends RouteBuilder {
                     .outType(Dummy.class)
                     .to("direct:getDummy")
                 .get("/count")
+                    .description("Count Dummys")
                     .to("direct:getCount")
                 .get("/probe")
+                    .description("still alive ?")
                     .to("direct:getProbe")
+                .post()
+                    .type(Dummy.class)
+                    .outType(Dummy.class)
+                    .description("Creates a Dummy")
+                    .consumes("application/json")
+                    .produces("application/json")
+                    .to("direct:createDummy")
                 .delete("/{id}")
                     .param()
                         .name("id")
@@ -72,53 +73,50 @@ public class Route extends RouteBuilder {
                     .endParam()
                     .produces("application/json")
                     .outType(String.class)
-                    .to("direct:deleteDummy")
-                .post()
-                    .type(Dummy.class)
-                    .outType(Dummy.class)
-                    .description("Creates a Dummy")
-                    .consumes("application/json")
-                    .produces("application/json")
-                    .to("direct:createDummy");
+                    .to("direct:deleteDummy");
 
         // GET
-        // Probe
-        from("direct:getProbe").transform().simple("I'm Alive !")
+        // >Probe
+        from("direct:getProbe")
+                .transform()
+                .simple("I'm Alive !")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
-        // Count
+        // >Count
         from("direct:getCount")
-                .to("mock:input")
                 .to("bean:dummyService?method=count")
                 .process(exchange -> {
                     Long nombre = exchange.getIn().getBody(Long.class);
                     exchange.getMessage().setBody(nombre);
-                });
+                })
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 
-        // All
-        from("direct:getDummys").to("mock:input")
+        // >All
+        from("direct:getDummys")
                 .to("bean:dummyService?method=findDummys()");
-        //by ID
-        from("direct:getDummy").to("mock:input")
+        //>by ID
+        from("direct:getDummy")
                 .to("bean:dummyService?method=findDummy(${header.id})")
                 .process(exchange -> {
                         // Return the Dummy's founded Object in the response Body
                         Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                         exchange.getMessage().setBody(myDummy);
-                });
+                })
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 
         // POST
         from("direct:createDummy")
-                .to("mock:input")
                 .to("bean:dummyService?method=create(${body})")
                 .process(exchange -> {
                     Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                     exchange.getMessage().setBody(myDummy);
-                });
+                })
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
 
         // DELETE
         from("direct:deleteDummy")
-                .to("mock:input")
                 .to("bean:dummyService?method=delete(${header.id})")
-                .transform().simple("deleted");
+                .transform()
+                .simple("deleted")
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
     }
 }
