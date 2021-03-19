@@ -22,9 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @CamelSpringBootTest
 @SpringBootTest()
 @TestPropertySource(locations="classpath:application-test.properties")
-@EnableAutoConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(SpringExtension.class)
 public class RouteTest {
 
     @Autowired

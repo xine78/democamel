@@ -2,7 +2,9 @@ package com.example.democamel.route;
 
 import com.example.democamel.errors.CustomException;
 import com.example.democamel.model.Dummy;
+import com.example.democamel.service.CamelRetryExceptionHandlerServiceImpl;
 import com.example.democamel.service.DummyService;
+import com.example.democamel.service.DummyServiceImpl;
 import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
@@ -16,8 +18,8 @@ import java.awt.print.Book;
 
 @Component
 public class Route extends RouteBuilder {
-    @Autowired
-    DummyService dummyService;
+/*    @Autowired
+    DummyService dummyService;*/
 
     @Override
     public void configure() throws Exception {
@@ -29,7 +31,8 @@ public class Route extends RouteBuilder {
                 .maximumRedeliveryDelay(60000)
                 .useExponentialBackOff()
                 .handled(true)
-                .to("bean:camelRetryExceptionHandlerService?method=handleCustomException");
+                //.to("bean:camelRetryExceptionHandlerService?method=handleCustomException")
+                .bean(CamelRetryExceptionHandlerServiceImpl.class , "handleCustomException()");
 
         restConfiguration()
                 .component("jetty").host("localhost").port(9080)
@@ -93,7 +96,8 @@ public class Route extends RouteBuilder {
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
         // >Count
         from("direct:getCount")
-                .to("bean:dummyService?method=count")
+                //.to("bean:dummyService?method=count")
+                .bean(DummyServiceImpl.class , "count()")
                 .process(exchange -> {
                     Long nombre = exchange.getIn().getBody(Long.class);
                     exchange.getMessage().setBody(nombre);
@@ -102,10 +106,12 @@ public class Route extends RouteBuilder {
 
         // >All
         from("direct:getDummys")
-                .to("bean:dummyService?method=findDummys()");
+                //.to("bean:dummyService?method=findDummys()");
+                .bean(DummyServiceImpl.class , "findDummys()");
         //>by ID
         from("direct:getDummy")
-                .to("bean:dummyService?method=findDummy(${header.id})")
+                //.to("bean:dummyService?method=findDummy(${header.id})")
+                .bean(DummyServiceImpl.class , "findDummy(${header.id})")
                 .process(exchange -> {
                         // Return the Dummy's founded Object in the response Body
                         Dummy myDummy = exchange.getIn().getBody(Dummy.class);
@@ -115,7 +121,8 @@ public class Route extends RouteBuilder {
 
         // POST
         from("direct:createDummy")
-                .to("bean:dummyService?method=create(${body})")
+                //.to("bean:dummyService?method=create(${body})")
+                .bean(DummyServiceImpl.class , "create(${body})")
                 .process(exchange -> {
                     Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                     exchange.getMessage().setBody(myDummy);
@@ -124,7 +131,8 @@ public class Route extends RouteBuilder {
 
         // PUT
         from("direct:updateDummy")
-                .to("bean:dummyService?method=updateDummy(${header.id}, ${body})")
+                //.to("bean:dummyService?method=updateDummy(${header.id}, ${body})")
+                .bean(DummyServiceImpl.class , "updateDummy(${header.id}, ${body})")
                 .process(exchange -> {
                     Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                     exchange.getMessage().setBody(myDummy);
@@ -133,7 +141,8 @@ public class Route extends RouteBuilder {
 
         // DELETE
         from("direct:deleteDummy")
-                .to("bean:dummyService?method=delete(${header.id})")
+                //.to("bean:dummyService?method=delete(${header.id})")
+                .bean(DummyServiceImpl.class , "delete(${header.id})")
                 .transform()
                 .simple("deleted")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));

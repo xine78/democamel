@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@TestPropertySource(locations="classpath:application-test.properties")
+@TestPropertySource(locations="classpath:application-test.properties")
 class DemocamelApplicationTests {
 
     @Test
