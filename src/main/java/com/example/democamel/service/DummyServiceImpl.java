@@ -20,7 +20,7 @@ public class DummyServiceImpl implements DummyService {
     @Override
     public Dummy findDummy(Integer id) {
         Optional<Dummy> optDummy = dummyDao.findById(id);
-        return optDummy.isPresent()?optDummy.get():null;
+        return optDummy.orElse(null);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class DummyServiceImpl implements DummyService {
     @Override
     public void delete(Integer id) {
         Optional<Dummy> optDumm = dummyDao.findById(id);
-        if (optDumm.isPresent()) dummyDao.delete(optDumm.get());
+        optDumm.ifPresent(dummy -> dummyDao.delete(dummy));
     }
 
     @Override
