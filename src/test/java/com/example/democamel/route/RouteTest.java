@@ -63,6 +63,19 @@ public class RouteTest {
 
     @Test
     @Order(4)
+    public void testUpdateDummy() throws Exception {
+        template = camelContext.createProducerTemplate();
+        Dummy md = (Dummy) template.requestBodyAndHeader("direct:updateDummy"
+                , new Dummy(1, "dummy_111")
+                , "id"
+                , 1);
+        assertTrue(md != null && md.getId()==1 && md.getName().equals("dummy_111"));
+        //
+        template.stop();
+    }
+
+    @Test
+    @Order(5)
     public void testDeleteDummy() throws Exception {
         template = camelContext.createProducerTemplate();
         template.sendBodyAndHeader("direct:deleteDummy", null, "id", 1);
@@ -74,7 +87,7 @@ public class RouteTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testCount() throws Exception {
         template = camelContext.createProducerTemplate();
         //

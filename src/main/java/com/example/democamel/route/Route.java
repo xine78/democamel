@@ -9,7 +9,10 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.apache.camel.model.rest.RestParamType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+
+import java.awt.print.Book;
 
 @Component
 public class Route extends RouteBuilder {
@@ -64,6 +67,13 @@ public class Route extends RouteBuilder {
                     .consumes("application/json")
                     .produces("application/json")
                     .to("direct:createDummy")
+                .put("/{id}")
+                    .type(Dummy.class)
+                    .outType(Dummy.class)
+                    .description("Update the Dummy by ID")
+                    .consumes("application/json")
+                    .produces("application/json")
+                    .to("direct:updateDummy")
                 .delete("/{id}")
                     .param()
                         .name("id")
@@ -106,6 +116,15 @@ public class Route extends RouteBuilder {
         // POST
         from("direct:createDummy")
                 .to("bean:dummyService?method=create(${body})")
+                .process(exchange -> {
+                    Dummy myDummy = exchange.getIn().getBody(Dummy.class);
+                    exchange.getMessage().setBody(myDummy);
+                })
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200));
+
+        // PUT
+        from("direct:updateDummy")
+                .to("bean:dummyService?method=updateDummy(${header.id}, ${body})")
                 .process(exchange -> {
                     Dummy myDummy = exchange.getIn().getBody(Dummy.class);
                     exchange.getMessage().setBody(myDummy);

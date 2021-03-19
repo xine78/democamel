@@ -29,8 +29,9 @@ public class DummyServiceImpl implements DummyService {
     }
 
     @Override
-    public void updateDummy(Dummy dummy) {
-        dummyDao.save(dummy);
+    public void updateDummy(Integer id, Dummy dummy) {
+        Optional<Dummy> optDumm = dummyDao.findById(id);
+        if (optDumm.isPresent()) dummyDao.save(dummy);
     }
 
     @Override
