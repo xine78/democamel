@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @CamelSpringBootTest
 @SpringBootTest()//webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@TestPropertySource(properties = "spring.cloud.consul.enabled=false")
+@TestPropertySource(locations="classpath:application-test.properties")
 @EnableAutoConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SpringExtension.class)
