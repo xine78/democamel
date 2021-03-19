@@ -20,8 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.jupiter.api.Assertions.*;
 
 @CamelSpringBootTest
-@SpringBootTest()//webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource(properties = "spring.cloud.consul.enabled=false")
+@SpringBootTest()
 @TestPropertySource(locations="classpath:application-test.properties")
 @EnableAutoConfiguration
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
