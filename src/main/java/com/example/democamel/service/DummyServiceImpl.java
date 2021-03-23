@@ -2,17 +2,19 @@ package com.example.democamel.service;
 
 import com.example.democamel.dao.DummyDao;
 import com.example.democamel.model.Dummy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 @Service("dummyService")
+@Slf4j
 public class DummyServiceImpl implements DummyService {
 
-    Logger logger = Logger.getLogger(DummyServiceImpl.class.getName());
+    //Logger logger = Logger.getLogger(DummyServiceImpl.class.getName());
 
     @Autowired
     private DummyDao dummyDao;
@@ -36,6 +38,7 @@ public class DummyServiceImpl implements DummyService {
 
     @Override
     public Dummy create(Dummy dummy) {
+        log.info(">>> Created Dummy: "+dummy.getName());
         return dummyDao.save(dummy);
     }
 
