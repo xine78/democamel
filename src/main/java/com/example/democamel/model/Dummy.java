@@ -1,11 +1,7 @@
 package com.example.democamel.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -27,34 +23,4 @@ public class Dummy {
         this.name = name;
     }
 
-/*
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Dummy)) return false;
-        Dummy dummy = (Dummy) o;
-        return getId().equals(dummy.getId()) && name.equals(dummy.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), name);
-    }*/
 }

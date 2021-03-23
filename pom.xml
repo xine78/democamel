@@ -158,7 +158,11 @@
             <version>3.8.0</version> <!-- use the same version as your Camel core version -->
             <scope>test</scope>
         </dependency>
-        <!-- LOMBOK -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.20</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
