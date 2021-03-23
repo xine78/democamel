@@ -1,5 +1,6 @@
 package com.example.democamel.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Dummy {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,7 +43,7 @@ public class Dummy {
     public void setName(String name) {
         this.name = name;
     }
-*/
+
 
     @Override
     public boolean equals(Object o) {
@@ -54,5 +56,5 @@ public class Dummy {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), name);
-    }
+    }*/
 }
