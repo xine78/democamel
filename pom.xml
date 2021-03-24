@@ -95,12 +95,17 @@
             <artifactId>camel-jetty-starter</artifactId>
             <version>3.8.0</version>
         </dependency>
-
-        <!-- H2 (runtime/to change after ) -->
+        <!-- PostgreSQL (runtime/to change after ) -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- H2 (test) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- camel spring boot -->
